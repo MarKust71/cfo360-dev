@@ -26,7 +26,7 @@ export async function POST(req: Request) {
           automation_step_id: string;
         }) =>
           type === "subscriber.added_to_group" ||
-          automation_step_id === "147751094688155460"
+          automation_step_id === "147756577159382620"
       );
       console.log("POST:", { subscriberAddedToGroup });
 
