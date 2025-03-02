@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { Data } from "@/stores/mailerlite-store/mailerlite-store.types";
 
 let webhookData: Data = {};
+const AUTOMATION_STEP_ID = process.env.MAILERLITE_AUTOMATION_STEP_ID;
 
 export async function POST(req: Request) {
   const response = await req.json();
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
           automation_step_id: string;
         }) =>
           type === "subscriber.added_to_group" ||
-          automation_step_id == "147756577159382620"
+          automation_step_id == AUTOMATION_STEP_ID
       );
       console.log("POST:", { subscriberAddedToGroup });
 
