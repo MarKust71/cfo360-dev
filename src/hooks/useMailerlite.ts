@@ -6,7 +6,6 @@ import { useMailerliteStore } from "@/stores/mailerlite-store/mailerlite-store";
 export const useMailerlite = () => {
   const { data, updateData } = useMailerliteStore();
 
-  console.log(process.env.NEXT_PUBLIC_INTERVAL);
   const INTERVAL = (process.env.NEXT_PUBLIC_INTERVAL || 5000) as number;
 
   useEffect(() => {
