@@ -9,11 +9,11 @@ let webhookData: Data = {};
 export async function POST(req: Request) {
   const response = await req.json();
   console.log("POST:", { response });
-  const { payload } = response;
-  console.log("POST:", { payload });
+  // const { payload } = response;
+  // console.log("POST:", { payload });
 
-  if (payload) {
-    const { events } = payload;
+  if (response) {
+    const { events } = response;
     console.log("POST:", { events });
 
     if (events) {
