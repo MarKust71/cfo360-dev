@@ -13,31 +13,31 @@ export async function POST(req: Request) {
 
   if (payload) {
     const { events } = payload;
-    // const {
-    //   payload: { events },
-    // } = await req.json();
-
     console.log("POST:", { events });
 
     if (events) {
       const subscriberAddedToGroup = events.find(
         ({ type }: { type: string }) => type === "subscriber.added_to_group"
       );
-
       console.log("POST:", { subscriberAddedToGroup });
 
       webhookData = subscriberAddedToGroup;
-
       console.log("POST:", { webhookData });
 
       return new NextResponse(JSON.stringify(subscriberAddedToGroup), {
         status: 201,
       });
     } else {
-      return new NextResponse(JSON.stringify({}), { status: 204 });
+      return new NextResponse(
+        JSON.stringify({ status: "error", message: "no events array" }),
+        { status: 404 }
+      );
     }
   } else {
-    return new NextResponse(JSON.stringify({}), { status: 204 });
+    return new NextResponse(
+      JSON.stringify({ status: "error", message: "no data" }),
+      { status: 404 }
+    );
   }
 }
 
