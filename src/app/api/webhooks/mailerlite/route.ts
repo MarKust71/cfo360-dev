@@ -18,7 +18,15 @@ export async function POST(req: Request) {
 
     if (events) {
       const subscriberAddedToGroup = events.find(
-        ({ type }: { type: string }) => type === "subscriber.added_to_group"
+        ({
+          type,
+          automation_step_id,
+        }: {
+          type: string;
+          automation_step_id: string;
+        }) =>
+          type === "subscriber.added_to_group" ||
+          automation_step_id === "147751094688155460"
       );
       console.log("POST:", { subscriberAddedToGroup });
 
