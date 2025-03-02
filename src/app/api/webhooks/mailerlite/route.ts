@@ -6,33 +6,22 @@ import { Data } from "@/stores/mailerlite-store/mailerlite-store.types";
 
 let webhookData: Data = {};
 const AUTOMATION_STEP_ID = process.env.MAILERLITE_AUTOMATION_STEP_ID;
+const DEBUG = process.env.DEBUG === "true";
+// const AUTOMATION_EVENT_TYPE = "subscriber.added_to_group";
 
 export async function POST(req: Request) {
   const response = await req.json();
-  console.log("POST:", { response });
-  // const { payload } = response;
-  // console.log("POST:", { payload });
-
   if (response) {
     const { events } = response;
-    console.log("POST:", { events });
+    if (DEBUG) console.log("POST:", { events });
 
     if (events) {
       const subscriberAddedToGroup = events.find(
-        ({
-          type,
-          automation_step_id,
-        }: {
-          type: string;
-          automation_step_id: string;
-        }) =>
-          type === "subscriber.added_to_group" ||
+        ({ automation_step_id }: { automation_step_id: string }) =>
           automation_step_id == AUTOMATION_STEP_ID
       );
-      console.log("POST:", { subscriberAddedToGroup });
 
       webhookData = subscriberAddedToGroup;
-      console.log("POST:", { webhookData });
 
       return new NextResponse(JSON.stringify(subscriberAddedToGroup), {
         status: 201,
