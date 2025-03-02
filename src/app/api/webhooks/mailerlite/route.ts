@@ -11,11 +11,17 @@ export async function POST(req: Request) {
     payload: { events },
   } = await req.json();
 
+  console.log("POST:", { events });
+
   const subscriberAddedToGroup = events.find(
     ({ type }: { type: string }) => type === "subscriber.added_to_group"
   );
 
+  console.log("POST:", { subscriberAddedToGroup });
+
   webhookData = subscriberAddedToGroup;
+
+  console.log("POST:", { webhookData });
 
   return new NextResponse(JSON.stringify(subscriberAddedToGroup), {
     status: 201,
