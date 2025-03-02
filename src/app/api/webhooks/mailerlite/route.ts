@@ -7,7 +7,8 @@ import { Data } from "@/stores/mailerlite-store/mailerlite-store.types";
 let webhookData: Data = {};
 
 export async function POST(req: Request) {
-  const payload = await req.json();
+  const response = await req.json();
+  const { payload } = response;
   console.log("POST:", { payload });
 
   if (payload) {
@@ -18,19 +19,23 @@ export async function POST(req: Request) {
 
     console.log("POST:", { events });
 
-    const subscriberAddedToGroup = events.find(
-      ({ type }: { type: string }) => type === "subscriber.added_to_group"
-    );
+    if (events) {
+      const subscriberAddedToGroup = events.find(
+        ({ type }: { type: string }) => type === "subscriber.added_to_group"
+      );
 
-    console.log("POST:", { subscriberAddedToGroup });
+      console.log("POST:", { subscriberAddedToGroup });
 
-    webhookData = subscriberAddedToGroup;
+      webhookData = subscriberAddedToGroup;
 
-    console.log("POST:", { webhookData });
+      console.log("POST:", { webhookData });
 
-    return new NextResponse(JSON.stringify(subscriberAddedToGroup), {
-      status: 201,
-    });
+      return new NextResponse(JSON.stringify(subscriberAddedToGroup), {
+        status: 201,
+      });
+    } else {
+      return new NextResponse(JSON.stringify({}), { status: 204 });
+    }
   } else {
     return new NextResponse(JSON.stringify({}), { status: 204 });
   }
