@@ -8,7 +8,7 @@ export const MailerliteStore = () => {
 
   return (
     <>
-      <Textarea>{JSON.stringify(data)}</Textarea>
+      <Textarea value={JSON.stringify(data)} />
     </>
   );
 };

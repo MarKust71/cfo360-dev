@@ -5,12 +5,14 @@ import { NextResponse } from "next/server";
 import { Data } from "@/stores/mailerlite-store/mailerlite-store.types";
 
 let webhookData: Data = {};
+
 const AUTOMATION_STEP_ID = process.env.MAILERLITE_AUTOMATION_STEP_ID;
 const DEBUG = process.env.DEBUG === "true";
 // const AUTOMATION_EVENT_TYPE = "subscriber.added_to_group";
 
 export async function POST(req: Request) {
   const response = await req.json();
+
   if (response) {
     const { events } = response;
     if (DEBUG) console.log("POST:", { events });
