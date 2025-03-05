@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import isEmpty from "lodash.isempty";
 import { useEffect } from "react";
 
 import { useMailerliteStore } from "@/stores/mailerlite-store/mailerlite-store";
@@ -17,10 +18,25 @@ export const useMailerlite = () => {
         const data = await response.json();
 
         if (DEBUG) console.log({ data });
+        if (isEmpty(data.webhookData)) return;
 
-        if (data.webhookData) {
-          updateData(data);
-        }
+        console.log({ webhookData: data.webhookData });
+
+        const webhookData = data.webhookData.subscriber || data.webhookData;
+        const { id, email, fields } = webhookData;
+
+        if (isEmpty(fields)) return;
+
+        const { name, last_name: lastName, phone, tax } = fields;
+        const logType =
+          webhookData === data.webhookData.subscriber
+            ? "automation"
+            : "notAutomation";
+
+        console.log({
+          [logType]: { id, email, fields: { name, lastName, phone, tax } },
+        });
+        updateData({ id, email, fields: { name, lastName, phone, tax } });
       } catch (error) {
         console.error(error);
       }
