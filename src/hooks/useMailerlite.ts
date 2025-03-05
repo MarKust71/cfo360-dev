@@ -18,39 +18,25 @@ export const useMailerlite = () => {
         const data = await response.json();
 
         if (DEBUG) console.log({ data });
-
         if (isEmpty(data.webhookData)) return;
+
         console.log({ webhookData: data.webhookData });
 
-        const isFromAutomation = Boolean(data.webhookData?.automation_step_id);
+        const webhookData = data.webhookData.subscriber || data.webhookData;
+        const { id, email, fields } = webhookData;
 
-        if (isFromAutomation) {
-          const { id, email, fields } = data.webhookData.subscriber;
+        if (isEmpty(fields)) return;
 
-          if (isEmpty(fields)) return;
+        const { name, last_name: lastName, phone, tax } = fields;
+        const logType =
+          webhookData === data.webhookData.subscriber
+            ? "automation"
+            : "notAutomation";
 
-          const { name, last_name: lastName, phone, tax } = fields;
-
-          console.log({
-            automation: { id, email, fields: { name, lastName, phone, tax } },
-          });
-          updateData({ id, email, fields: { name, lastName, phone, tax } });
-        } else {
-          const { id, email, fields } = data.webhookData;
-
-          if (isEmpty(fields)) return;
-
-          const { name, last_name: lastName, phone, tax } = fields;
-
-          console.log({
-            notAutomation: {
-              id,
-              email,
-              fields: { name, lastName, phone, tax },
-            },
-          });
-          updateData({ id, email, fields: { name, lastName, phone, tax } });
-        }
+        console.log({
+          [logType]: { id, email, fields: { name, lastName, phone, tax } },
+        });
+        updateData({ id, email, fields: { name, lastName, phone, tax } });
       } catch (error) {
         console.error(error);
       }
