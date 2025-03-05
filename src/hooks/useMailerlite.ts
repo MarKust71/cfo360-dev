@@ -16,26 +16,24 @@ export const useMailerlite = () => {
       try {
         const response = await fetch("/api/webhooks/mailerlite");
         const data = await response.json();
-
         if (DEBUG) console.log({ data });
-        if (isEmpty(data.webhookData)) return;
 
-        console.log({ webhookData: data.webhookData });
+        const subscriber = data.webhookData.subscriber;
 
-        const webhookData = data.webhookData.subscriber || data.webhookData;
-        const { id, email, fields } = webhookData;
+        if (isEmpty(subscriber)) {
+          updateData({});
+
+          return;
+        }
+
+        const { id, email, fields } = subscriber;
 
         if (isEmpty(fields)) return;
 
         const { name, last_name: lastName, phone, tax } = fields;
-        const logType =
-          webhookData === data.webhookData.subscriber
-            ? "automation"
-            : "notAutomation";
 
-        console.log({
-          [logType]: { id, email, fields: { name, lastName, phone, tax } },
-        });
+        if (DEBUG)
+          console.log({ id, email, fields: { name, lastName, phone, tax } });
         updateData({ id, email, fields: { name, lastName, phone, tax } });
       } catch (error) {
         console.error(error);
@@ -47,5 +45,17 @@ export const useMailerlite = () => {
     return () => clearInterval(interval); // Sprzątanie interwału
   }, []);
 
-  return { data, updateData };
+  const resetData = async () => {
+    const response = await fetch("/api/webhooks/mailerlite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ action: "reset" }),
+    });
+
+    if (DEBUG) console.log(await response.json());
+  };
+
+  return { data, updateData, resetData };
 };
