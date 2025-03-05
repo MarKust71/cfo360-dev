@@ -1,5 +1,6 @@
 "use client";
 
+import { Textarea } from "@/components/ui/textarea";
 import { useMailerlite } from "@/hooks/useMailerlite";
 
 export const MailerliteStore = () => {
@@ -7,7 +8,7 @@ export const MailerliteStore = () => {
 
   return (
     <>
-      <div>{JSON.stringify(data)}</div>
+      <Textarea>{JSON.stringify(data)}</Textarea>
     </>
   );
 };
