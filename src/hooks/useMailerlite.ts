@@ -3,6 +3,8 @@ import { useEffect } from "react";
 
 import { useMailerliteStore } from "@/stores/mailerlite-store/mailerlite-store";
 
+const DEBUG = process.env.DEBUG === "true";
+
 export const useMailerlite = () => {
   const { data, updateData } = useMailerliteStore();
 
@@ -13,6 +15,8 @@ export const useMailerlite = () => {
       try {
         const response = await fetch("/api/webhooks/mailerlite");
         const data = await response.json();
+
+        if (DEBUG) console.log({ data });
 
         if (data.webhookData) {
           updateData(data);
