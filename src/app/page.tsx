@@ -12,9 +12,11 @@ export default async function Home() {
           <h1>CFO360</h1>
         </a>
 
-        <h2>mailerlite store</h2>
+        <div>
+          <h2 className={"mb-2"}>mailerlite store:</h2>
 
-        <MailerliteStore />
+          <MailerliteStore />
+        </div>
 
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/api/auth/login?screen_hint=signup">
