@@ -4,6 +4,7 @@ import { MailerliteStoreState } from "@/stores/mailerlite-store/mailerlite-store
 
 export const useMailerliteStore = create<MailerliteStoreState>((set) => ({
   data: {},
+
   updateData: (newData) => {
     set({ data: newData });
   },
