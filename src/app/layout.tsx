@@ -18,11 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
+    <html lang="pl" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <UserProvider>
-        <body
-          className={`${GeistSans.className} ${GeistMono.className} antialiased`}
-        >
+        <body className={`antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
