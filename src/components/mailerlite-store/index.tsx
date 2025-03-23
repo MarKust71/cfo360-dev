@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useMailerlite } from "@/hooks/useMailerlite";
+import { useMailerlite } from "@/hooks/use-mailerlite";
 
 export const MailerliteStore = () => {
   const { data, resetData } = useMailerlite();
